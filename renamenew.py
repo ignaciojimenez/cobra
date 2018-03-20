@@ -1,7 +1,6 @@
 # -*- coding: latin-1 -*-
 
-import os,time,re,string,shutil,subprocess,sys,configparser,urllib.request,urllib.parse,urllib.error
-from urllib.parse import quote
+import os,time,re,shutil,subprocess,sys,configparser,urllib.request,urllib.parse,urllib.error
 
 def removeEmptyFolders(path):
 	if not os.path.isdir(path):
@@ -14,7 +13,7 @@ def removeEmptyFolders(path):
 			fullpath = os.path.join(path, f)
 			if os.path.isdir(fullpath):
 				removeEmptyFolders(fullpath)
-	
+				
 	# if folder empty, delete it
 	files = os.listdir(path)
 	if len(files) == 0 and not any(path in s for s in rutas):
@@ -33,8 +32,8 @@ def comprobarRuta(directorio):
 		
 ###INICIO MAIN
 if __name__ == '__main__':
-
-	#print "["+ time.ctime() + "] renombrar.py started"
+	
+	# print "["+ time.ctime() + "] renombrar.py started"
 	config = configparser.ConfigParser()
 	config.readfp(open('/home/pi/.cobra/conf_rename.ini'))
 	
@@ -42,9 +41,7 @@ if __name__ == '__main__':
 	rutaPeliculas = config.get('DIRS','downloadBase')+config.get('DIRS','rutaPeliculas')
 
 	#TODO: recorrer todas las rutas que se carguen, no declararlas "a pelo"
-	global rutas 
 	rutas = [ rutaOriginal, rutaPeliculas ]
-		
 	extensiones = ["avi", "mp4" , "mkv","vob","mpg","iso"]
 
 	comprobarRuta(rutaOriginal)
@@ -81,6 +78,6 @@ if __name__ == '__main__':
 				else:
 					subprocess.check_call('rm '+ re.escape(os.path.join(root,fichero)), shell = True)
 					print("["+ time.ctime() + "] Archivo DESCARTADO y borrado= " + re.escape(fichero))
-	#print("Terminado el bucle de ficheros")		
+	#print("Terminado el bucle de ficheros")
 	borrarDirsVacios() #ojo esta llamada depende de la variable global rutas
 	sys.exit()
