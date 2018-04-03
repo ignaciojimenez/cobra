@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../conf_move.ini
+source /home/pi/.cobra/conf_move.ini
 
 echo [$(date)] " movetorrent.sh started"
 
@@ -29,4 +29,3 @@ echo [$(date)] " Torrent #$TORRENTID: not completed. Ignoring."
 fi
 #echo "* * * * * Operations on torrent ID $TORRENTID completed. * * * * *"
 done
-
