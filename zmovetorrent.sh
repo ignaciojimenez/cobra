@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /home/pi/conf_move.ini
+source .cobra/auth/conf_move.ini
 
 echo [$(date)] " movetorrent.sh started"
 
