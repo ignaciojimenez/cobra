@@ -3,7 +3,7 @@
     "always_rename": false, 
     "batch": false, 
     "custom_filename_character_blacklist": "",
-    "dry_run": true, 
+    "dry_run": false, 
     "episode_separator": "-", 
     "episode_single": "%02d", 
     "extension_pattern": "(\\.[a-zA-Z0-9]+)$", 
