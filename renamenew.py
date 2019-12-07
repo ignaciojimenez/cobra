@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     # print "["+ time.ctime() + "] renombrar.py started"
     config = configparser.ConfigParser()
-    config.readfp(open('/home/pi/.cobra/conf_rename.ini'))
+    config.readfp(open('conf_rename.ini'))
 
     rutaOriginal = config.get('DIRS', 'downloadBase')+config.get('DIRS', 'rutaOriginal')
     rutaPeliculas = config.get('DIRS', 'downloadBase')+config.get('DIRS', 'rutaPeliculas')
