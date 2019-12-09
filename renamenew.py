@@ -41,9 +41,10 @@ def comprobarRuta(directorio):
 # INICIO MAIN
 if __name__ == '__main__':
 
+    dir_path = os.path.dirname(os.path.realpath(__file__))
     # print "["+ time.ctime() + "] renombrar.py started"
     config = configparser.ConfigParser()
-    config.readfp(open('conf_rename.ini'))
+    config.read_file(open(os.path.join(dir_path,'conf_rename.ini')))
 
     rutaOriginal = config.get('DIRS', 'downloadBase')+config.get('DIRS', 'rutaOriginal')
     rutaPeliculas = config.get('DIRS', 'downloadBase')+config.get('DIRS', 'rutaPeliculas')

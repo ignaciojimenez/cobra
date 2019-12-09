@@ -1,6 +1,10 @@
 #!/bin/bash
 
-source auth/conf_move.ini
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# echo "${DIR}/auth/conf_move.ini"
+
+source ${DIR}/auth/conf_move.ini
 
 echo [$(date)] " movetorrent.sh started"
 

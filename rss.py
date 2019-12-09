@@ -10,13 +10,15 @@ import configparser
 
 # print "["+ time.ctime() + "] rss.py started"
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
 config = configparser.ConfigParser()
-config.readfp(open('.cobra/conf_rss.ini'))
+config.read_file(open(os.path.join(dir_path,'conf_rss.ini')))
 updateConf = config.get('RSS', 'cobraBase')+config.get('RSS', 'updateConf')
 urlfeed = config.get('RSS', 'urlfeed')
 
 configAuth = configparser.ConfigParser()
-configAuth.readfp(open('.cobra/auth/conf_auth.ini'))
+configAuth.read_file(open(os.path.join(dir_path,'auth/conf_auth.ini')))
 auth = configAuth.get('AUT', 'auth')
 
 with open(updateConf, "r") as f:
