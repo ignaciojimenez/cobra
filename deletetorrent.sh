@@ -23,6 +23,7 @@ do
   if [ "$DL_COMPLETED" != "" ] && [ "$STATE_STOPPED" != "" ]; then
     #echo "Removing torrent from list."
     transmission-remote --auth $auth --torrent $TORRENTID --remove
+    echo [$(date)] " Torrent #$TORRENTID: Completed. Removing."
   else
     echo [$(date)] " Torrent #$TORRENTID: not completed. Ignoring."
   fi
