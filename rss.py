@@ -13,7 +13,7 @@ import configparser
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 config = configparser.ConfigParser()
-config.read_file(open(os.path.join(dir_path,'conf_rss.ini')))
+config.read_file(open(os.path.join(dir_path,'conf.ini')))
 updateConf = config.get('RSS', 'cobraBase')+config.get('RSS', 'updateConf')
 urlfeed = config.get('RSS', 'urlfeed')
 

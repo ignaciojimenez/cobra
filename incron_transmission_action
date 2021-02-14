@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Script to kickstart raspbmc and torrent client specific configurations
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+/usr/bin/python3 /home/${USER}/.cobra/rename.py >> /home/${USER}/.cobra/logs/rename.log
+/usr/bin/python3 /home/${USER}/.local/bin/tvnamer -q -b -c /home/${USER}/.cobra/mytvnamerconfig.json /mnt/almacenNTFS/Descargas/ready >> /home/${USER}/.cobra/logs/tvnamer.log || true
+/bin/bash /home/${USER}/.cobra/deletetorrent.sh >> /home/${USER}/.cobra/logs/torrentdelete.log

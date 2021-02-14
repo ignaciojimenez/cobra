@@ -12,7 +12,6 @@ import configparser
 def removeEmptyFolders(path):
     if not os.path.isdir(path):
         return
-
     # remove empty subfolders
     files = os.listdir(path)
     if len(files):
@@ -44,10 +43,14 @@ if __name__ == '__main__':
     dir_path = os.path.dirname(os.path.realpath(__file__))
     # print "["+ time.ctime() + "] renombrar.py started"
     config = configparser.ConfigParser()
-    config.read_file(open(os.path.join(dir_path,'conf_rename.ini')))
+    config.read_file(open(os.path.join(dir_path,'conf.ini')))
 
     rutaOriginal = config.get('DIRS', 'downloadBase')+config.get('DIRS', 'rutaOriginal')
     rutaPeliculas = config.get('DIRS', 'downloadBase')+config.get('DIRS', 'rutaPeliculas')
+
+    config = configparser.ConfigParser()
+    config.read_file(open(os.path.join(dir_path,'auth/conf_auth.ini')))
+    slack_hook = f"https://hooks.slack.com/services/{config.get('SLACK', 'cobra_token')}"
 
     # TODO: recorrer todas las rutas que se carguen, no declararlas "a pelo"
     rutas = [rutaOriginal, rutaPeliculas]
@@ -72,10 +75,16 @@ if __name__ == '__main__':
                     # comprobamos si es una serie (SXXEXX o XXxXX)
                     if re.search(r"([sS])(\d+)([eE]|EP|ep)(\d+)", fichero) != None or re.search(r"(\d+)x(\d+)", fichero) != None:
                         print("[" + time.ctime() + "] Serie detectada y dejada para tvnamer= "+fichero)
+                        subprocess.check_call(
+                            'curl -X POST -H \'Content-type: application/json\' --data \'{"text":"Serie leida y dejada para tvnamer: ' +
+                            os.path.join(root, fichero) + '"}\' ' + slack_hook, shell=True)
                     # si es una pelicula
                     else:
                         shutil.move(os.path.join(root, fichero),
                                     os.path.join(rutaPeliculas, fichero))
+                        subprocess.check_call(
+                            'curl -X POST -H \'Content-type: application/json\' --data \'{"text":"Pelicula movida: ' +
+                            os.path.join(rutaPeliculas, fichero) + '"}\' ' + slack_hook, shell=True)
                         print("[" + time.ctime() + "] Pelicula Movida= "+os.path.join(root, fichero))
                 else:
                     # fichero no video grande
@@ -83,7 +92,7 @@ if __name__ == '__main__':
                           re.escape(os.path.join(root, fichero)))
             else:
                 # fichero pequeño comprobar srt
-                if (os.path.splitext(fichero)[1] == '.srt'):
+                if os.path.splitext(fichero)[1] == '.srt':
                     shutil.move(os.path.join(root, fichero), os.path.join(rutaPeliculas, fichero))
                     print("[" + time.ctime() + "] Archivo de subs original. Movido =" +
                           os.path.join(root, fichero))
