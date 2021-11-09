@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to kickstart raspbmc and torrent client specific configurations
+# Script to rename downloaded files and delete torrent after a torrent has been downloaded
 
 set -o errexit
 set -o pipefail
