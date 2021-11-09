@@ -76,14 +76,14 @@ if __name__ == '__main__':
                     if re.search(r"([sS])(\d+)([eE]|EP|ep)(\d+)", fichero) != None or re.search(r"(\d+)x(\d+)", fichero) != None:
                         print("[" + time.ctime() + "] Serie detectada y dejada para tvnamer= "+fichero)
                         subprocess.check_call(
-                            'curl -X POST -H \'Content-type: application/json\' --data \'{"text":"Serie leida y dejada para tvnamer: ' +
+                            'curl -s -X POST -H \'Content-type: application/json\' --data \'{"text":"Serie leida y dejada para tvnamer: ' +
                             os.path.join(root, fichero) + '"}\' ' + slack_hook, shell=True)
                     # si es una pelicula
                     else:
                         shutil.move(os.path.join(root, fichero),
                                     os.path.join(rutaPeliculas, fichero))
                         subprocess.check_call(
-                            'curl -X POST -H \'Content-type: application/json\' --data \'{"text":"Pelicula movida: ' +
+                            'curl -s -X POST -H \'Content-type: application/json\' --data \'{"text":"Pelicula movida: ' +
                             os.path.join(rutaPeliculas, fichero) + '"}\' ' + slack_hook, shell=True)
                         print("[" + time.ctime() + "] Pelicula Movida= "+os.path.join(root, fichero))
                 else:
