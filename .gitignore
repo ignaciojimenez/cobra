@@ -2,3 +2,4 @@ logs/
 auth/
 venv/*
 .idea/*
+.DS_Store
