@@ -6,6 +6,13 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-/usr/bin/python3 /home/${USER}/.cobra/rename.py >> /home/${USER}/.cobra/logs/rename.log
-/usr/bin/python3 /home/${USER}/.local/bin/tvnamer -q -b -c /home/${USER}/.cobra/mytvnamerconfig.json /mnt/almacenNTFS/Descargas/ready >> /home/${USER}/.cobra/logs/tvnamer.log || true
-/bin/bash /home/${USER}/.cobra/deletetorrent.sh >> /home/${USER}/.cobra/logs/torrentdelete.log
+log_path="/home/${USER}/.cobra/logs"
+rename_log="${log_path}/rename.log"
+tvnamer_log="${log_path}/tvnamer.log"
+torrentdelete_log="${log_path}/torrentdelete.log"
+
+/usr/bin/python3 "/home/${USER}/.cobra/rename.py" >> "${rename_log}"
+echo "[$(date)] tvnamer started" >> "${tvnamer_log}"
+/usr/bin/tvnamer -q -b -c /home/${USER}/.cobra/mytvnamerconfig.json /mnt/almacenNTFS/Descargas/ready >> "${tvnamer_log}" || true
+echo "[$(date)] tvnamer finished" >> "${tvnamer_log}"
+/bin/bash "/home/${USER}/.cobra/deletetorrent.sh" >> "${torrentdelete_log}"
