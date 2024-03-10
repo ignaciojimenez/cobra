@@ -67,39 +67,32 @@ if __name__ == '__main__':
         # print (os.path.join(root,fichero).strip(path))
         print(("[" + time.ctime() + "] Ficheros leidos = "+str(len(files))))
         for fichero in files:
-            # Comprobamos que sea un fichero grande
-            if (os.path.getsize(os.path.join(root, fichero)))/(1024*1024.0) > 60:
-                # si es un fichero de las extensiones definidas previamente
-                if any(fichero[-3:].lower() in s for s in extensiones):
-                    # print ("FICHERO VIDEO LEIDO: " + fichero)
-                    # comprobamos si es una serie (SXXEXX o XXxXX)
-                    if re.search(r"([sS])(\d+)([eE]|EP|ep)(\d+)", fichero) != None or re.search(r"(\d+)x(\d+)", fichero) != None:
-                        print("[" + time.ctime() + "] Serie detectada y dejada para tvnamer= "+fichero)
-                        subprocess.check_call(
-                            'curl -s -X POST -H \'Content-type: application/json\' --data \'{"text":"Serie leida y dejada para tvnamer: ' +
-                            os.path.join(root, fichero) + '"}\' ' + slack_hook, shell=True)
-                    # si es una pelicula
-                    else:
-                        shutil.move(os.path.join(root, fichero),
-                                    os.path.join(rutaPeliculas, fichero))
-                        subprocess.check_call(
-                            'curl -s -X POST -H \'Content-type: application/json\' --data \'{"text":"Pelicula movida: ' +
-                            os.path.join(rutaPeliculas, fichero) + '"}\' ' + slack_hook, shell=True)
-                        print("[" + time.ctime() + "] Pelicula Movida= "+os.path.join(root, fichero))
-                else:
-                    # fichero no video grande
-                    print("[" + time.ctime() + "] Archivo grande no video . Dejado en carpeta =" +
-                          re.escape(os.path.join(root, fichero)))
-            else:
-                # fichero pequeño comprobar srt
-                if os.path.splitext(fichero)[1] == '.srt':
-                    shutil.move(os.path.join(root, fichero), os.path.join(rutaPeliculas, fichero))
-                    print("[" + time.ctime() + "] Archivo de subs original. Movido =" +
-                          os.path.join(root, fichero))
-                else:
+            # si es un fichero de las extensiones definidas previamente
+            if any(fichero[-3:].lower() in s for s in extensiones):
+                # print ("FICHERO VIDEO LEIDO: " + fichero)
+                # comprobamos si es una serie (SXXEXX o XXxXX)
+                if re.search(r"([sS])(\d+)([eE]|EP|ep)(\d+)", fichero) != None or re.search(r"(\d+)x(\d+)", fichero) != None:
+                    print("[" + time.ctime() + "] Serie detectada y dejada para tvnamer= "+fichero)
                     subprocess.check_call(
-                        'rm ' + re.escape(os.path.join(root, fichero)), shell=True)
-                    print("[" + time.ctime() + "] Archivo DESCARTADO y borrado= " + re.escape(fichero))
+                        'curl -s -X POST -H \'Content-type: application/json\' --data \'{"text":"Serie leida y dejada para tvnamer: ' +
+                        os.path.join(root, fichero) + '"}\' ' + slack_hook, shell=True)
+                # si es una pelicula
+                else:
+                    shutil.move(os.path.join(root, fichero),
+                                os.path.join(rutaPeliculas, fichero))
+                    subprocess.check_call(
+                        'curl -s -X POST -H \'Content-type: application/json\' --data \'{"text":"Pelicula movida: ' +
+                        os.path.join(rutaPeliculas, fichero) + '"}\' ' + slack_hook, shell=True)
+                    print("[" + time.ctime() + "] Pelicula Movida= "+os.path.join(root, fichero))
+            # fichero pequeño comprobar srt
+            elif os.path.splitext(fichero)[1] == '.srt':
+                shutil.move(os.path.join(root, fichero), os.path.join(rutaPeliculas, fichero))
+                print("[" + time.ctime() + "] Archivo de subs original. Movido =" +
+                        os.path.join(root, fichero))
+            else:
+                subprocess.check_call(
+                    'rm ' + re.escape(os.path.join(root, fichero)), shell=True)
+                print("[" + time.ctime() + "] Archivo DESCARTADO y borrado= " + re.escape(fichero))
     # print("Terminado el bucle de ficheros")
     borrarDirsVacios()  # ojo esta llamada depende de la variable global rutas
     sys.exit()
